@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
-interface PublicUser {
+export interface PublicUser {
   id: string;
   email: string;
   createdAt: Date;

@@ -13,14 +13,14 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 
-interface PublicUser {
+export interface PublicUser {
   id: string;
   email: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface AuthResponse {
+export interface AuthResponse {
   user: PublicUser;
   accessToken: string;
   refreshToken: string;

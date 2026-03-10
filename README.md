@@ -8,6 +8,7 @@ A clean authentication API built with NestJS, Prisma, PostgreSQL, and JWT.
 - PostgreSQL database
 - Prisma ORM
 - JWT authentication (access + refresh tokens)
+- Built-in Auth UI at `/` for quick manual testing
 - `bcrypt` password hashing
 - DTO validation using `class-validator`
 - Global validation pipe
@@ -31,17 +32,27 @@ prisma/
 
 - Node.js 20+
 - npm
-- PostgreSQL (if running locally)
+- Docker (recommended for PostgreSQL)
 
 ## Environment Setup
 
-1. Copy env file:
+Create `.env` in the project root:
 
-```bash
-cp .env.example .env
+```env
+PORT=3000
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=auth_db
+POSTGRES_PORT=5432
+
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/auth_db?schema=public"
+
+JWT_ACCESS_SECRET=super_access_secret_change_me
+JWT_REFRESH_SECRET=super_refresh_secret_change_me
+ACCESS_TOKEN_TTL=15m
+REFRESH_TOKEN_TTL=7d
 ```
-
-2. Update values in `.env` if needed.
 
 ## Run Locally
 
@@ -51,16 +62,16 @@ cp .env.example .env
 npm install
 ```
 
-2. Generate Prisma client:
+2. Start PostgreSQL:
 
 ```bash
-npm run prisma:generate
+docker compose up -d postgres
 ```
 
-3. Run database migrations:
+3. Sync database schema:
 
 ```bash
-npm run prisma:migrate -- --name init
+npx prisma db push
 ```
 
 4. Start the app in development mode:
@@ -71,6 +82,10 @@ npm run start:dev
 
 API will run at `http://localhost:3000`.
 
+Auth UI is available at:
+
+- `http://localhost:3000/`
+
 ## Swagger Docs
 
 After starting the API, open:
@@ -79,11 +94,7 @@ After starting the API, open:
 
 ## Docker Setup
 
-1. Copy env file:
-
-```bash
-cp .env.example .env
-```
+1. Make sure `.env` exists (see **Environment Setup** above).
 
 2. Start API + PostgreSQL:
 
